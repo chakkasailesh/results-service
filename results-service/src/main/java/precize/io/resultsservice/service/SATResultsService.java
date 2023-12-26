@@ -9,4 +9,5 @@ public interface SATResultsService {
 	public void addResult(SATResultDTO resultDTO);
 	public void updateResult(SATResultDTO resultDTO);
 	public void deleteResult(String name);
+	public int getRank(String name);
 }

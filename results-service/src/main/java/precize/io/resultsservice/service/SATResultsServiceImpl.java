@@ -35,17 +35,32 @@ public class SATResultsServiceImpl implements SATResultsService {
 	public void updateResult(SATResultDTO resultDTO) {
 		SATResult result = resultRepository.findByName(resultDTO.getName())
 				.get();
-		result.setAddress(resultDTO.getAddress());
-		result.setCity(resultDTO.getCity());
-		result.setCountry(resultDTO.getCountry());
 		result.setSatScore(resultDTO.getSatScore());
 		result.setPassed(resultDTO.getSatScore() > 30 ? "PASS" : "FAIL");
-		result.setPincode(resultDTO.getPincode());
 		resultRepository.save(result);
 	}
 
 	public void deleteResult(String name) {
 		resultRepository.deleteByName(name);
+	}
+
+	public int getRank(String name) {
+		List<SATResult> results = resultRepository.getRanks().get();
+		int rank = 0, i = 0;
+		double currScore = -1;
+		while (i < results.size()) {
+			if (results.get(i).getName().equals(name)) {
+				if (results.get(i).getSatScore() != currScore) {
+					return i + 1;
+				} else
+					return rank;
+			} else if (results.get(i).getSatScore() != currScore)
+				rank = i + 1;
+			currScore = results.get(i).getSatScore();
+			i++;
+			System.out.println(rank + " " + i + " " + currScore);
+		}
+		return -1;
 	}
 
 }

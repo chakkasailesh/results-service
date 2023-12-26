@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import precize.io.resultsservice.service.SATResultsService;
 
 @RestController
 @RequestMapping("/results")
+@CrossOrigin
 public class SATResultsController {
 	@Autowired
 	private SATResultsService satResultsService;
@@ -36,9 +38,14 @@ public class SATResultsController {
 
 	@DeleteMapping("/{name}")
 	public ResponseEntity<String> deleteResult(@PathVariable String name) {
-		System.out.println(name);
 		satResultsService.deleteResult(name);
 		return ResponseEntity.ok("Record deleted successfully");
+	}
+
+	@GetMapping("/rank/{name}")
+	public ResponseEntity<Integer> getRank(@PathVariable String name) {
+		int rank = satResultsService.getRank(name);
+		return ResponseEntity.ok(rank);
 	}
 
 	@PostMapping
